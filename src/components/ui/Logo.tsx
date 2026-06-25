@@ -9,11 +9,7 @@ export function Logo({ tone = 'light', className }: LogoProps) {
   const isLight = tone === 'light';
 
   return (
-    <a
-      aria-label="Bait ul Aqba home"
-      className={cn('flex items-center gap-3', className)}
-      href="#home"
-    >
+    <a aria-label="Bait ul Aqba home" className={cn('flex items-center gap-3', className)} href="/">
       <span className="flex h-10 w-10 items-center justify-center rounded-lg border border-gold/50 bg-gold/10">
         <svg
           aria-hidden="true"

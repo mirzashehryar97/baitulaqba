@@ -7,6 +7,7 @@ import { animate, motion, useInView } from 'framer-motion';
 import { STATS, type Stat } from '@/data/content';
 
 import { staggerContainer, viewportOnce } from '@/lib/motion';
+import { cn } from '@/lib/utils';
 
 function parseStat(value: string) {
   const numeric = Number.parseFloat(value.replace(/[^0-9.]/g, '')) || 0;
@@ -47,7 +48,11 @@ function StatItem({ stat, play }: { stat: Stat; play: boolean }) {
   );
 }
 
-export function StatsBar() {
+type StatsBarProps = {
+  stats?: Stat[];
+};
+
+export function StatsBar({ stats = STATS }: StatsBarProps) {
   const ref = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, viewportOnce);
 
@@ -56,12 +61,15 @@ export function StatsBar() {
       <div className="mx-auto w-full max-w-7xl px-5 py-12 sm:px-8 lg:px-12">
         <motion.div
           animate={inView ? 'visible' : 'hidden'}
-          className="grid grid-cols-2 gap-x-6 gap-y-8 sm:grid-cols-3 lg:grid-cols-5"
+          className={cn(
+            'grid grid-cols-2 gap-x-6 gap-y-8 sm:grid-cols-3',
+            stats.length === 4 ? 'lg:grid-cols-4' : 'lg:grid-cols-5',
+          )}
           initial="hidden"
           ref={ref}
           variants={staggerContainer}
         >
-          {STATS.map((stat) => (
+          {stats.map((stat) => (
             <StatItem key={stat.label} play={inView} stat={stat} />
           ))}
         </motion.div>

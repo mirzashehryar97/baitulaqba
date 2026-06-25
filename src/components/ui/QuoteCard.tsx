@@ -62,7 +62,7 @@ export function QuoteCard({
       ) : null}
       <blockquote
         className={cn(
-          'font-display text-lg leading-snug sm:text-xl',
+          'font-display text-xl leading-snug sm:text-2xl',
           isDark ? 'text-cream-soft' : 'text-emerald-deep',
         )}
       >
@@ -70,7 +70,7 @@ export function QuoteCard({
       </blockquote>
       <figcaption
         className={cn(
-          'mt-4 flex items-center gap-2 text-xs font-medium uppercase tracking-[0.18em]',
+          'mt-4 flex items-center gap-2 text-sm font-medium uppercase tracking-[0.18em]',
           isDark ? 'text-gold-soft/90' : 'text-gold-deep',
         )}
       >

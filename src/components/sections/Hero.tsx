@@ -7,9 +7,9 @@ import { ArrowRight, Heart, Play } from 'lucide-react';
 
 import { Button } from '@/components/ui/Button';
 
-import { HERO_BADGES, QUOTES } from '@/data/content';
+import { HERO_BADGES } from '@/data/content';
 
-import { EASE_OUT, fadeUp, staggerContainer } from '@/lib/motion';
+import { fadeUp, staggerContainer } from '@/lib/motion';
 
 export function Hero() {
   return (
@@ -20,14 +20,14 @@ export function Hero() {
       <div className="absolute inset-0">
         <Image
           alt="A young orphan looking up with hope in a Gaza-like setting"
-          className="object-cover object-center"
+          className="object-cover object-[78%_center] sm:object-[82%_center] lg:object-right"
           fill
           priority
           sizes="100vw"
           src="/images/hero-child.jpg"
         />
         {/* Green overlay on hero image — uncomment to restore the emerald tint and improve text contrast */}
-        <div className="absolute inset-0 bg-gradient-to-r from-emerald-deepest/95 via-emerald-deepest/70 to-emerald-deepest/40" /> 
+        <div className="absolute inset-0 bg-gradient-to-r from-emerald-deepest/95 via-emerald-deepest/70 to-emerald-deepest/40" />
         <div className="absolute inset-0 bg-gradient-to-t from-emerald-deepest via-transparent to-emerald-deepest/40" />
       </div>
 

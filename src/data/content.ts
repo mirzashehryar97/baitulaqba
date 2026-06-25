@@ -1,5 +1,6 @@
 import type { LucideIcon } from 'lucide-react';
 import {
+  Bitcoin,
   BookOpen,
   ClipboardCheck,
   Gift,
@@ -21,7 +22,7 @@ import {
 } from 'lucide-react';
 
 export const NAV_LINKS = [
-  { label: 'Home', href: '#home' },
+  { label: 'Home', href: '/' },
   { label: 'About Us', href: '#about' },
   { label: 'Our Initiatives', href: '#initiatives' },
   { label: 'Virtual Adoption', href: '#adoption' },
@@ -127,12 +128,19 @@ export const TRANSPARENCY_STEPS: TransparencyStep[] = [
   {
     icon: HandHeart,
     title: 'Sponsorship Assigned',
-    description: 'You are matched with a child and sponsorship begins.',
+    description: 'You are matched with a verified child and sponsorship begins.',
+  },
+  {
+    icon: Bitcoin,
+    title: 'Funds Transferred',
+    description:
+      'Payment received is converted to cryptocurrency and sent through reliable agents to Gaza.',
   },
   {
     icon: TrendingUp,
-    title: 'Ongoing Monitoring',
-    description: 'We continuously monitor and provide updates on impact & well-being.',
+    title: 'Delivered & Monitored',
+    description:
+      'Local partners deliver support and continue monitoring the child’s needs and well-being.',
   },
 ];
 
@@ -219,6 +227,10 @@ export const QUOTES = {
   process: {
     text: 'The most beloved people to Allah are those who are most beneficial to people.',
     source: 'Al-Mu‘jam al-Awsat',
+  },
+  transparency: {
+    text: 'Each of you is a shepherd, and each of you is responsible for those under your care.',
+    source: 'Sahih al-Bukhari & Sahih Muslim',
   },
   impact: {
     text: 'Whoever relieves a believer’s hardship, Allah will relieve his hardship on the Day of Resurrection.',
