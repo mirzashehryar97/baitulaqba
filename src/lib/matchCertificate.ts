@@ -7,8 +7,8 @@ import {
   drawRoundedImage,
   fetchPdfImageBuffer,
   formatPdfDate,
+  getPdfFontBuffers,
   PDF_COLORS,
-  PDF_FONT_BUFFERS,
   PDFDocument,
   registerPdfFonts,
 } from '@/lib/pdfKit';
@@ -19,9 +19,24 @@ import type { OrphanProfile } from '@/types/orphans';
 
 export { formatCertificateNumber } from '@/lib/certificateNumber';
 
-const PDF_TEMPLATE_IMAGE = readFileSync(
-  path.join(process.cwd(), 'public', 'images', 'pdf', 'match-certificate-template.png'),
-);
+let templateImage: Buffer | null = null;
+
+/**
+ * Read + cache the certificate background raster. Read lazily (not at module
+ * load) so importing this module stays side-effect-free; the file lives under
+ * `public/`, which is not bundled into the serverless function by default, so
+ * `next.config.mjs`'s `outputFileTracingIncludes` ships it with the certificate
+ * routes — otherwise this `readFileSync` throws ENOENT on Vercel.
+ */
+function getCertificateTemplateImage(): Buffer {
+  if (!templateImage) {
+    templateImage = readFileSync(
+      path.join(process.cwd(), 'public', 'images', 'pdf', 'match-certificate-template.png'),
+    );
+  }
+
+  return templateImage;
+}
 
 // The template raster is 1536x1024; the PDF page uses the same coordinate space so
 // the values below map 1:1 onto the artwork.
@@ -91,7 +106,7 @@ export async function generateMatchCertificatePdf({ donor, match, orphan }: Matc
 
   return new Promise<Buffer>((resolve, reject) => {
     const doc = new PDFDocument({
-      font: PDF_FONT_BUFFERS.inter as unknown as string,
+      font: getPdfFontBuffers().inter as unknown as string,
       margin: 0,
       size: PDF_CERT_SIZE,
     });
@@ -112,7 +127,10 @@ function drawCertificate(
   imageBuffer: Buffer | null,
 ) {
   registerPdfFonts(doc);
-  doc.image(PDF_TEMPLATE_IMAGE, 0, 0, { height: doc.page.height, width: doc.page.width });
+  doc.image(getCertificateTemplateImage(), 0, 0, {
+    height: doc.page.height,
+    width: doc.page.width,
+  });
 
   const { photo } = MATCH_CERT_LAYOUT;
   drawRoundedImage(doc, imageBuffer, photo.x, photo.y, photo.width, photo.height, {

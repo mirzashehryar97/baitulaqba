@@ -1,6 +1,5 @@
 import { readFileSync } from 'node:fs';
 import { createRequire } from 'node:module';
-import path from 'node:path';
 
 import type PDFDocumentConstructor from 'pdfkit';
 import sharp from 'sharp';
@@ -15,17 +14,50 @@ const PDFKitModule = require('pdfkit') as
 /** pdfkit's CommonJS/ESM interop resolved to a usable constructor. */
 export const PDFDocument = typeof PDFKitModule === 'function' ? PDFKitModule : PDFKitModule.default;
 
-const fontFile = (packageName: string, fileName: string) =>
-  path.join(process.cwd(), 'node_modules', '@fontsource', packageName, 'files', fileName);
-
-/** Self-hosted font buffers shared by every generated PDF. */
-export const PDF_FONT_BUFFERS = {
-  amiri: readFileSync(fontFile('amiri', 'amiri-arabic-400-normal.woff')),
-  amiriBold: readFileSync(fontFile('amiri', 'amiri-arabic-700-normal.woff')),
-  inter: readFileSync(fontFile('inter', 'inter-latin-400-normal.woff')),
-  interBold: readFileSync(fontFile('inter', 'inter-latin-700-normal.woff')),
-  interSemiBold: readFileSync(fontFile('inter', 'inter-latin-600-normal.woff')),
+export type PdfFontBuffers = {
+  amiri: Buffer;
+  amiriBold: Buffer;
+  inter: Buffer;
+  interBold: Buffer;
+  interSemiBold: Buffer;
 };
+
+let pdfFontBuffers: PdfFontBuffers | null = null;
+
+/**
+ * Read + cache the self-hosted font buffers shared by every generated PDF.
+ *
+ * Read lazily on purpose: `src/lib/orphans.ts` imports this module for its PDF
+ * helpers, and the orphan/match list pages import `orphans.ts` transitively.
+ * Reading fonts at module-load time would run `readFileSync` during those page
+ * renders and crash them (this was the cause of the `/admin/orphans` and
+ * `/admin/matches` 500s on Vercel). Reading inside a function keeps importing
+ * this module side-effect-free.
+ *
+ * Paths are resolved with string-literal `require.resolve` rather than a
+ * `process.cwd()`-relative path so Next's server file tracer detects the `.woff`
+ * dependencies and bundles them into the serverless function — a hand-built path
+ * is invisible to the tracer and throws ENOENT at runtime on Vercel.
+ */
+export function getPdfFontBuffers(): PdfFontBuffers {
+  if (!pdfFontBuffers) {
+    pdfFontBuffers = {
+      amiri: readFileSync(require.resolve('@fontsource/amiri/files/amiri-arabic-400-normal.woff')),
+      amiriBold: readFileSync(
+        require.resolve('@fontsource/amiri/files/amiri-arabic-700-normal.woff'),
+      ),
+      inter: readFileSync(require.resolve('@fontsource/inter/files/inter-latin-400-normal.woff')),
+      interBold: readFileSync(
+        require.resolve('@fontsource/inter/files/inter-latin-700-normal.woff'),
+      ),
+      interSemiBold: readFileSync(
+        require.resolve('@fontsource/inter/files/inter-latin-600-normal.woff'),
+      ),
+    };
+  }
+
+  return pdfFontBuffers;
+}
 
 /** Brand palette shared across PDF documents. */
 export const PDF_COLORS = {
@@ -43,11 +75,12 @@ export const PDF_COLORS = {
 const ORPHAN_PHOTO_BUCKET = 'orphan-photos';
 
 export function registerPdfFonts(doc: PDFKit.PDFDocument) {
-  doc.registerFont('Inter', PDF_FONT_BUFFERS.inter);
-  doc.registerFont('Inter-SemiBold', PDF_FONT_BUFFERS.interSemiBold);
-  doc.registerFont('Inter-Bold', PDF_FONT_BUFFERS.interBold);
-  doc.registerFont('Amiri', PDF_FONT_BUFFERS.amiri);
-  doc.registerFont('Amiri-Bold', PDF_FONT_BUFFERS.amiriBold);
+  const fonts = getPdfFontBuffers();
+  doc.registerFont('Inter', fonts.inter);
+  doc.registerFont('Inter-SemiBold', fonts.interSemiBold);
+  doc.registerFont('Inter-Bold', fonts.interBold);
+  doc.registerFont('Amiri', fonts.amiri);
+  doc.registerFont('Amiri-Bold', fonts.amiriBold);
 }
 
 const ARABIC_PATTERN = new RegExp('[\\u0600-\\u06FF]');

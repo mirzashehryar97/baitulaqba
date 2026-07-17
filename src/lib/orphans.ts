@@ -11,8 +11,8 @@ import {
   drawRoundedImage,
   fetchPdfImageBuffer,
   formatPdfDate,
+  getPdfFontBuffers,
   PDF_COLORS,
-  PDF_FONT_BUFFERS,
   PDFDocument,
   registerPdfFonts,
 } from '@/lib/pdfKit';
@@ -1119,7 +1119,7 @@ export async function generateOrphanProfilePdf(orphan: OrphanProfile) {
 
   return new Promise<Buffer>((resolve, reject) => {
     const doc = new PDFDocument({
-      font: PDF_FONT_BUFFERS.inter as unknown as string,
+      font: getPdfFontBuffers().inter as unknown as string,
       margin: 0,
       size: PDF_CARD_SIZE,
     });
