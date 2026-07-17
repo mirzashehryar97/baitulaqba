@@ -1,5 +1,6 @@
 import { readFileSync } from 'node:fs';
 import { createRequire } from 'node:module';
+import path from 'node:path';
 
 import type PDFDocumentConstructor from 'pdfkit';
 import sharp from 'sharp';
@@ -24,6 +25,9 @@ export type PdfFontBuffers = {
 
 let pdfFontBuffers: PdfFontBuffers | null = null;
 
+const fontFile = (packageName: string, fileName: string) =>
+  path.join(process.cwd(), 'node_modules', '@fontsource', packageName, 'files', fileName);
+
 /**
  * Read + cache the self-hosted font buffers shared by every generated PDF.
  *
@@ -34,25 +38,19 @@ let pdfFontBuffers: PdfFontBuffers | null = null;
  * `/admin/matches` 500s on Vercel). Reading inside a function keeps importing
  * this module side-effect-free.
  *
- * Paths are resolved with string-literal `require.resolve` rather than a
- * `process.cwd()`-relative path so Next's server file tracer detects the `.woff`
- * dependencies and bundles them into the serverless function — a hand-built path
- * is invisible to the tracer and throws ENOENT at runtime on Vercel.
+ * The paths are built at runtime (not via `require.resolve`) so webpack does not
+ * try to bundle these binary `.woff` files during the build. Instead the fonts
+ * are shipped to the serverless function via `outputFileTracingIncludes` in
+ * `next.config.mjs`, keyed to the routes that actually generate PDFs.
  */
 export function getPdfFontBuffers(): PdfFontBuffers {
   if (!pdfFontBuffers) {
     pdfFontBuffers = {
-      amiri: readFileSync(require.resolve('@fontsource/amiri/files/amiri-arabic-400-normal.woff')),
-      amiriBold: readFileSync(
-        require.resolve('@fontsource/amiri/files/amiri-arabic-700-normal.woff'),
-      ),
-      inter: readFileSync(require.resolve('@fontsource/inter/files/inter-latin-400-normal.woff')),
-      interBold: readFileSync(
-        require.resolve('@fontsource/inter/files/inter-latin-700-normal.woff'),
-      ),
-      interSemiBold: readFileSync(
-        require.resolve('@fontsource/inter/files/inter-latin-600-normal.woff'),
-      ),
+      amiri: readFileSync(fontFile('amiri', 'amiri-arabic-400-normal.woff')),
+      amiriBold: readFileSync(fontFile('amiri', 'amiri-arabic-700-normal.woff')),
+      inter: readFileSync(fontFile('inter', 'inter-latin-400-normal.woff')),
+      interBold: readFileSync(fontFile('inter', 'inter-latin-700-normal.woff')),
+      interSemiBold: readFileSync(fontFile('inter', 'inter-latin-600-normal.woff')),
     };
   }
 
