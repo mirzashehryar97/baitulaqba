@@ -6,6 +6,7 @@ import { motion } from 'framer-motion';
 import { ArrowRight, HandHeart } from 'lucide-react';
 
 import { Button } from '@/components/ui/Button';
+import { useSponsorOrphanForm } from '@/components/ui/SponsorOrphanModal';
 
 import { JOURNEY_CARDS, type JourneyCard } from '@/data/content';
 
@@ -49,6 +50,8 @@ function Card({ card }: { card: JourneyCard }) {
 }
 
 export function JourneyCards() {
+  const { openSponsorForm } = useSponsorOrphanForm();
+
   return (
     <section
       className="relative w-full overflow-hidden bg-emerald-deep py-20 sm:py-24"
@@ -88,15 +91,15 @@ export function JourneyCards() {
               Every child has a story. Every story deserves a chance.
             </motion.p>
             <motion.div variants={fadeUp}>
-              <Button className="mt-7" href="#process" size="lg">
-                Start the Journey
+              <Button className="mt-7" onClick={openSponsorForm} size="lg">
+                Begin Sponsorship
                 <ArrowRight className="h-4 w-4" />
               </Button>
             </motion.div>
           </div>
 
-        <motion.div className="xl:col-span-8" variants={fadeUp}>
-          <div className="grid grid-cols-1 gap-4 min-[400px]:grid-cols-2 sm:grid-cols-3 lg:grid-cols-4">
+          <motion.div className="xl:col-span-8" variants={fadeUp}>
+            <div className="grid grid-cols-1 gap-4 min-[400px]:grid-cols-2 sm:grid-cols-3 lg:grid-cols-4">
               {JOURNEY_CARDS.map((card) => (
                 <Card card={card} key={card.step} />
               ))}

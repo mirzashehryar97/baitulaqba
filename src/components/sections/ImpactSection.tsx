@@ -3,32 +3,36 @@
 import Image from 'next/image';
 
 import { motion } from 'framer-motion';
-import { ArrowRight, BookOpen, HeartHandshake, Home, Stethoscope } from 'lucide-react';
+import { BookOpen, HeartHandshake, Home, MessageCircle } from 'lucide-react';
 
-import { Button } from '@/components/ui/Button';
+import { SponsorOrphanButton } from '@/components/ui/SponsorOrphanButton';
 
 import { fadeUp, staggerContainer, viewportOnce } from '@/lib/motion';
 
 const SUPPORT_PILLARS = [
   {
     icon: Home,
-    title: 'Everyday Stability',
-    description: 'Reliable support helps a child’s family plan for essential daily needs.',
+    title: 'Stability & Essential Aid',
+    description:
+      'Consistent support helps families meet priority needs with dignity and stability.',
   },
   {
     icon: BookOpen,
-    title: 'Education Continuity',
-    description: 'Children are better able to keep learning and hold onto future possibilities.',
+    title: 'Education & Emotional Support',
+    description:
+      'Sponsors provide educational and emotional support alongside practical assistance.',
   },
   {
-    icon: Stethoscope,
-    title: 'Essential Care',
-    description: 'Support contributes toward food, clothing, healthcare, and other urgent needs.',
+    icon: MessageCircle,
+    title: 'Direct Family Connection',
+    description:
+      'Sponsors can remain in contact with the child or guardian through video, audio, and messaging.',
   },
   {
     icon: HeartHandshake,
-    title: 'Dignity & Belonging',
-    description: 'A child knows that someone has chosen to stand beside them consistently.',
+    title: 'Dignity, Stability & Hope',
+    description:
+      'Sustained care creates a meaningful bond and helps families face uncertainty with hope.',
   },
 ] as const;
 
@@ -57,19 +61,17 @@ export function ImpactSection() {
       >
         <motion.div className="flex flex-col justify-center lg:col-span-4" variants={fadeUp}>
           <span className="text-sm font-semibold uppercase tracking-[0.28em] text-gold-soft">
-            The promise of sponsorship
+            Virtual Child Adoption Program
           </span>
           <h2 className="mt-4 font-display text-4xl leading-tight text-cream-soft sm:text-5xl">
-            What your support makes possible
+            What sustained sponsorship makes possible
           </h2>
           <p className="mt-5 max-w-md text-base leading-relaxed text-cream/70">
-            Sponsorship is not a one-time intervention. It is a dependable commitment that helps a
-            child face uncertainty with greater stability, care, and hope.
+            Virtual adoption connects sponsoring families with orphaned and widowed families in
+            Gaza, combining consistent support for essential needs with a meaningful bond of care
+            and compassion.
           </p>
-          <Button className="mt-8 self-start" href="#adoption" size="lg">
-            Sponsor a Child
-            <ArrowRight className="h-4 w-4" />
-          </Button>
+          <SponsorOrphanButton className="mt-8 self-start" size="lg" />
         </motion.div>
 
         <motion.div className="grid gap-4 sm:grid-cols-2 lg:col-span-5" variants={staggerContainer}>
@@ -95,19 +97,20 @@ export function ImpactSection() {
           variants={fadeUp}
         >
           <Image
-            alt="A child looking ahead with hope"
+            alt="Children taking part in a wellbeing activity organised in Gaza"
             className="object-cover object-top"
             fill
             sizes="(max-width: 1024px) 100vw, 25vw"
-            src="/images/journey-future.jpg"
+            src="/images/official/bait-ul-aqba/child-joy-activity.png"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-emerald-deepest via-emerald-deepest/15 to-transparent" />
           <figcaption className="absolute inset-x-0 bottom-0 p-6">
             <blockquote className="font-display text-2xl leading-snug text-cream-soft">
-              “You are not simply meeting a need. You are helping protect a childhood.”
+              “Restoring dignity, stability, and hope through direct human connection and sustained
+              care.”
             </blockquote>
             <p className="mt-4 text-xs font-semibold uppercase tracking-[0.18em] text-gold-soft">
-              Consistent care. Lasting hope.
+              Bait ul Aqba Virtual Child Adoption Program
             </p>
           </figcaption>
         </motion.figure>

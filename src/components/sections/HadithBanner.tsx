@@ -63,7 +63,7 @@ export function HadithBanner() {
               fill="currentColor"
             />
             <blockquote className="mt-3 font-display text-2xl leading-snug text-emerald-deep sm:text-3xl lg:text-[2rem]">
-              “The one who cares for an orphan and I will be together in Paradise like this.”
+              “{QUOTES.hadith.text}”
             </blockquote>
             <figcaption className="mt-4 flex items-center gap-2 text-xs font-medium uppercase tracking-[0.2em] text-gold-deep">
               <span className="h-px w-6 bg-current opacity-60" />

@@ -8,3 +8,8 @@ npm-debug.log*
 .env*.local
 next-env.d.ts
 *.tsbuildinfo
+test-results/
+
+# Unused images pulled out of the served/built app to keep the repo lean.
+# Kept on local disk (not tracked) so they can be restored if needed.
+unused-assets/

@@ -1,3 +1,5 @@
+import { BrandMark } from '@/components/ui/BrandMark';
+
 import { cn } from '@/lib/utils';
 
 type LogoProps = {
@@ -10,22 +12,8 @@ export function Logo({ tone = 'light', className }: LogoProps) {
 
   return (
     <a aria-label="Bait ul Aqba home" className={cn('flex items-center gap-3', className)} href="/">
-      <span className="flex h-10 w-10 items-center justify-center rounded-lg border border-gold/50 bg-gold/10">
-        <svg
-          aria-hidden="true"
-          className="h-6 w-6 text-gold"
-          fill="none"
-          viewBox="0 0 24 24"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            d="M12 2.5 3.5 8.2V21h5.5v-6.3h6V21h5.5V8.2L12 2.5Z"
-            stroke="currentColor"
-            strokeLinejoin="round"
-            strokeWidth="1.5"
-          />
-          <path d="M12 2.5v4" stroke="currentColor" strokeLinecap="round" strokeWidth="1.5" />
-        </svg>
+      <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-gold/35 bg-cream-soft p-1 shadow-sm">
+        <BrandMark className="h-full w-full" priority />
       </span>
       <span className="flex flex-col leading-none">
         <span

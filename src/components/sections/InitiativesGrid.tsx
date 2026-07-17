@@ -37,30 +37,26 @@ export function InitiativesGrid({
             <p className="mt-4 text-base leading-relaxed text-ink/65">
               Through compassion, education and relief — restoring dignity to families in Gaza.
             </p>
-            <Button className="mt-6" href="#contact" size="md" variant="ghost">
+            <Button className="mt-6" href="/#initiatives" size="md" variant="ghost">
               Explore All Initiatives
               <ArrowRight className="h-4 w-4" />
             </Button>
           </motion.div>
 
           <motion.div
-            className="grid gap-4 sm:grid-cols-2 lg:col-span-9 lg:grid-cols-5"
+            className="grid gap-4 sm:grid-cols-2 lg:col-span-9 lg:grid-cols-3"
             variants={staggerContainer}
           >
             {INITIATIVES.map((initiative) => {
               const isHighlighted = initiative.title === highlightedTitle;
-
-              return (
-                <motion.article
-                  className={cn(
-                    'group flex flex-col rounded-2xl border p-6 transition-all duration-300 hover:-translate-y-1',
-                    isHighlighted
-                      ? 'border-gold/30 bg-emerald-deep text-cream-soft shadow-card'
-                      : 'border-emerald/10 bg-cream-soft text-emerald-deep shadow-soft hover:border-gold/40',
-                  )}
-                  key={initiative.title}
-                  variants={fadeUp}
-                >
+              const cardClassName = cn(
+                'group flex h-full w-full cursor-pointer flex-col rounded-2xl border p-6 text-left transition-all duration-300 hover:-translate-y-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold focus-visible:ring-offset-2 focus-visible:ring-offset-offwhite',
+                isHighlighted
+                  ? 'border-gold/30 bg-emerald-deep text-cream-soft shadow-card'
+                  : 'border-emerald/10 bg-cream-soft text-emerald-deep shadow-soft hover:border-gold/40',
+              );
+              const cardContent = (
+                <>
                   <div
                     className={cn(
                       'flex h-11 w-11 items-center justify-center rounded-xl',
@@ -82,23 +78,28 @@ export function InitiativesGrid({
                   >
                     {initiative.description}
                   </p>
-                  <a
+                  <span
                     className={cn(
-                      'mt-4 inline-flex items-center gap-1.5 text-sm font-semibold transition-colors',
+                      'mt-4 inline-flex items-center gap-1.5 self-start text-sm font-semibold transition-colors',
                       isHighlighted
-                        ? 'text-gold-soft hover:text-gold'
-                        : 'text-gold-deep hover:text-emerald-soft',
+                        ? 'text-gold-soft group-hover:text-gold'
+                        : 'text-gold-deep group-hover:text-emerald-soft',
                     )}
-                    href={
-                      initiative.title === 'Mosques & Schools'
-                        ? '/mosques-schools'
-                        : initiative.title === 'Virtual Child Adoption Program'
-                          ? '/#adoption'
-                          : '#contact'
-                    }
                   >
                     Learn More
                     <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" />
+                  </span>
+                </>
+              );
+
+              return (
+                <motion.article className="h-full" key={initiative.title} variants={fadeUp}>
+                  <a
+                    aria-current={isHighlighted ? 'page' : undefined}
+                    className={cardClassName}
+                    href={initiative.href ?? '#contact'}
+                  >
+                    {cardContent}
                   </a>
                 </motion.article>
               );

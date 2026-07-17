@@ -20,7 +20,16 @@
     "bracketSpacing": true,
     "expand": "auto",
     "useEditorconfig": true,
-    "includes": ["**", "!**/node_modules", "!**/.next", "!**/build", "!**/public", "!**/README.md"]
+    "includes": [
+      "**",
+      "!**/node_modules",
+      "!**/.next",
+      "!**/build",
+      "!**/public",
+      "!**/README.md",
+      "!test-results/**",
+      "!**/test-results/**"
+    ]
   },
   "linter": {
     "domains": {
@@ -142,7 +151,15 @@
         "noVar": "error"
       }
     },
-    "includes": ["**", "!**/node_modules", "!**/.next", "!**/public", "!**/README.md"]
+    "includes": [
+      "**",
+      "!**/node_modules",
+      "!**/.next",
+      "!**/public",
+      "!**/README.md",
+      "!test-results/**",
+      "!**/test-results/**"
+    ]
   },
   "javascript": {
     "formatter": {

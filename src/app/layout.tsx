@@ -1,6 +1,12 @@
 import type { Metadata, Viewport } from 'next';
 import { Cormorant_Garamond, Inter } from 'next/font/google';
 
+import { OrganizationJsonLd } from '@/components/seo/OrganizationJsonLd';
+import { ConfirmationProvider } from '@/components/ui/ConfirmationProvider';
+import { ToastProvider } from '@/components/ui/ToastProvider';
+
+import { SITE_DESCRIPTION, SITE_NAME, SITE_URL } from '@/lib/seo';
+
 import './globals.css';
 
 const inter = Inter({
@@ -16,10 +22,15 @@ const cormorant = Cormorant_Garamond({
   display: 'swap',
 });
 
+// Site-wide defaults only. Every route — including /admin and /portal —
+// inherits what is declared here, so page-specific concerns (canonical URL,
+// share cards) live on the pages themselves via `createMetadata`. Public page
+// titles already carry the brand, so no `title.template` is applied.
 export const metadata: Metadata = {
-  title: 'Bait ul Aqba — Sponsor a Gaza Orphan | Education, Care & Hope',
-  description:
-    'Bait ul Aqba restores stability, education, and hope for orphans in Gaza. Sponsor a child with 100% of donations reaching Gaza — verified, transparent, and Zakat eligible.',
+  metadataBase: new URL(SITE_URL),
+  title: 'Bait ul Aqba — Sponsor a Gaza Orphan',
+  description: SITE_DESCRIPTION,
+  applicationName: SITE_NAME,
   keywords: [
     'Gaza orphan sponsorship',
     'sponsor an orphan',
@@ -27,11 +38,6 @@ export const metadata: Metadata = {
     'Zakat eligible',
     'Bait ul Aqba',
   ],
-  openGraph: {
-    title: 'Bait ul Aqba — Sponsor a Gaza Orphan',
-    description: 'One child. One future. You can protect. Sponsor an orphan in Gaza today.',
-    type: 'website',
-  },
 };
 
 export const viewport: Viewport = {
@@ -41,7 +47,12 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html className={`${inter.variable} ${cormorant.variable}`} lang="en">
-      <body>{children}</body>
+      <body>
+        <OrganizationJsonLd />
+        <ToastProvider>
+          <ConfirmationProvider>{children}</ConfirmationProvider>
+        </ToastProvider>
+      </body>
     </html>
   );
 }

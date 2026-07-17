@@ -3,9 +3,10 @@
 import Image from 'next/image';
 
 import { motion } from 'framer-motion';
-import { ArrowRight, Heart, Play } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 
 import { Button } from '@/components/ui/Button';
+import { SponsorOrphanButton } from '@/components/ui/SponsorOrphanButton';
 
 import { HERO_BADGES } from '@/data/content';
 
@@ -19,12 +20,12 @@ export function Hero() {
     >
       <div className="absolute inset-0">
         <Image
-          alt="A young orphan looking up with hope in a Gaza-like setting"
-          className="object-cover object-[78%_center] sm:object-[82%_center] lg:object-right"
+          alt="A smiling baby inside a shelter tent"
+          className="object-cover object-[82%_center] lg:object-right"
           fill
           priority
           sizes="100vw"
-          src="/images/hero-child.jpg"
+          src="/images/hero-child-7-wide-v2.png"
         />
         {/* Green overlay on hero image — uncomment to restore the emerald tint and improve text contrast */}
         <div className="absolute inset-0 bg-gradient-to-r from-emerald-deepest/95 via-emerald-deepest/70 to-emerald-deepest/40" />
@@ -67,15 +68,9 @@ export function Hero() {
             </motion.p>
 
             <motion.div className="mt-8 flex flex-wrap items-center gap-3" variants={fadeUp}>
-              <Button href="#adoption" size="lg">
-                <Heart className="h-4 w-4" />
-                Sponsor a Child
-              </Button>
+              <SponsorOrphanButton size="lg">Sponsor a Child</SponsorOrphanButton>
               <Button href="#process" size="lg" variant="outline">
                 See How It Works
-                <span className="flex h-6 w-6 items-center justify-center rounded-full bg-cream/15">
-                  <Play className="h-3 w-3 fill-current" />
-                </span>
               </Button>
             </motion.div>
 

@@ -3,9 +3,8 @@
 import Image from 'next/image';
 
 import { motion } from 'framer-motion';
-import { ArrowRight, Heart } from 'lucide-react';
 
-import { Button } from '@/components/ui/Button';
+import { SponsorOrphanButton } from '@/components/ui/SponsorOrphanButton';
 
 import { QUOTES } from '@/data/content';
 
@@ -16,11 +15,11 @@ export function FinalCTA() {
     <section className="relative w-full overflow-hidden bg-emerald-deepest" id="contact">
       <div className="absolute inset-0">
         <Image
-          alt="A lone figure looking toward a city skyline at sunset"
-          className="object-cover object-center"
+          alt="Children in Gaza gathered around food supplies provided through Bait ul Aqba"
+          className="object-cover object-[center_20%]"
           fill
           sizes="100vw"
-          src="/images/gaza-sunset.jpg"
+          src="/images/home/family-food-relief-wide.jpg"
         />
         <div className="absolute inset-0 bg-gradient-to-r from-emerald-deepest via-emerald-deepest/85 to-emerald-deepest/55" />
         <div className="absolute inset-0 bg-gradient-to-t from-emerald-deepest via-transparent to-emerald-deepest/60" />
@@ -53,17 +52,7 @@ export function FinalCTA() {
           </motion.p>
 
           <motion.div className="mt-9 flex flex-wrap items-center gap-3" variants={fadeUp}>
-            <Button href="#adoption" size="lg">
-              <Heart className="h-4 w-4" />
-              Sponsor an Orphan
-            </Button>
-            <Button href="#initiatives" size="lg" variant="outline">
-              Donate to Gaza
-              <ArrowRight className="h-4 w-4" />
-            </Button>
-            <Button href="#about" size="lg" variant="outline">
-              Learn About Our Mission
-            </Button>
+            <SponsorOrphanButton size="lg" />
           </motion.div>
         </div>
       </motion.div>
