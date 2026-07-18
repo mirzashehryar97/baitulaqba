@@ -101,7 +101,7 @@ export async function PATCH(request: Request, context: { params: Promise<{ id: s
       address: body.address ?? donor.address ?? '',
       cityCountry: body.cityCountry ?? donor.cityCountry ?? '',
       donorSource: body.donorSource ?? donor.donorSource,
-      email: body.email ?? donor.email,
+      email: body.email ?? donor.email ?? '',
       fullName: body.fullName ?? donor.fullName,
       notes: body.notes ?? donor.notes ?? '',
       phone: body.phone ?? donor.phone ?? '',

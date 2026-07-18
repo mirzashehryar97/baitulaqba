@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { type MouseEvent, useEffect, useState } from 'react';
 
 import { AnimatePresence, motion } from 'framer-motion';
 import { LogIn, Menu, X } from 'lucide-react';
@@ -38,6 +38,28 @@ export function Header() {
     };
   }, [menuOpen]);
 
+  // Same-page hash links need special handling on mobile: the menu is open with
+  // `overflow: hidden` on the body, and closing it triggers a re-render plus the
+  // menu's exit animation. Scrolling synchronously in that same tick gets the
+  // scroll cancelled (the browser lands back at 0), so the link appears dead. We
+  // instead prevent the default jump, close the menu, and defer the scroll until
+  // after the close has committed and the scroll lock is released.
+  const handleNavClick = (resolvedHref: string) => (event: MouseEvent<HTMLAnchorElement>) => {
+    setMenuOpen(false);
+
+    if (resolvedHref.startsWith('/#') && window.location.pathname === '/') {
+      const target = document.getElementById(resolvedHref.slice(2));
+      if (target) {
+        event.preventDefault();
+        window.history.replaceState(null, '', resolvedHref);
+        requestAnimationFrame(() => {
+          document.body.style.overflow = '';
+          requestAnimationFrame(() => target.scrollIntoView({ behavior: 'smooth' }));
+        });
+      }
+    }
+  };
+
   return (
     <motion.header
       animate={{ y: 0, opacity: 1 }}
@@ -62,6 +84,7 @@ export function Header() {
               className="relative whitespace-nowrap text-sm font-medium text-cream/80 transition-colors hover:text-gold-soft after:absolute after:-bottom-1.5 after:left-0 after:h-px after:w-0 after:bg-gold after:transition-all after:duration-300 hover:after:w-full"
               href={resolveNavHref(link.href)}
               key={link.href}
+              onClick={handleNavClick(resolveNavHref(link.href))}
             >
               {link.label}
             </a>
@@ -117,7 +140,7 @@ export function Header() {
                   className="rounded-lg px-3 py-3 text-base font-medium text-cream/85 transition-colors hover:bg-white/5 hover:text-gold-soft"
                   href={resolveNavHref(link.href)}
                   key={link.href}
-                  onClick={() => setMenuOpen(false)}
+                  onClick={handleNavClick(resolveNavHref(link.href))}
                 >
                   {link.label}
                 </a>
@@ -125,7 +148,7 @@ export function Header() {
               <a
                 className="rounded-lg px-3 py-3 text-base font-medium text-cream/85 transition-colors hover:bg-white/5 hover:text-gold-soft"
                 href="/faq"
-                onClick={() => setMenuOpen(false)}
+                onClick={handleNavClick('/faq')}
               >
                 FAQ
               </a>
@@ -133,7 +156,7 @@ export function Header() {
               <a
                 className="mt-3 flex items-center justify-center gap-2 rounded-lg border border-cream/20 px-3 py-3 text-base font-bold text-cream/90 transition-colors hover:border-gold/50 hover:text-gold-soft"
                 href="/portal/login"
-                onClick={() => setMenuOpen(false)}
+                onClick={handleNavClick('/portal/login')}
               >
                 <LogIn className="h-4 w-4" />
                 Login

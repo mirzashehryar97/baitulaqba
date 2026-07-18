@@ -292,7 +292,7 @@ export function DonorsDashboard({
                           <NavLinkSpinner className="ml-1 h-3.5 w-3.5" />
                         </Link>
                         <span className="mt-1 block text-sm font-normal text-[#6b7280]">
-                          {donor.email}
+                          {donor.email || 'No email'}
                         </span>
                       </span>
                     </div>

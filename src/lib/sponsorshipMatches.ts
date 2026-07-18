@@ -69,7 +69,7 @@ const MATCH_SELECT = `
 type MatchableDonorRow = {
   active: boolean;
   auth_user_id: string | null;
-  email: string;
+  email: string | null;
   full_name: string;
   id: string;
   phone: string | null;
@@ -99,7 +99,7 @@ type ExistingMatchRow = {
 
 type DonorEligibilityRow = {
   active: boolean;
-  email: string;
+  email: string | null;
   full_name: string;
   id: string;
 };

@@ -151,10 +151,10 @@ export function DonorFormPage() {
                 />
                 <TextField
                   error={errors.email}
+                  hint="Optional. Required for donor portal login."
                   label="Email Address"
                   onChange={(value) => updateForm('email', value)}
                   placeholder="name@example.com"
-                  required
                   type="email"
                   value={form.email}
                 />
@@ -290,8 +290,8 @@ export function DonorFormPage() {
 
         <aside className="space-y-5">
           <InfoCard icon={Mail} title="Google login email">
-            Donors will later sign in with Google using this email. Keep it accurate before their
-            first login.
+            Email is optional here. Donors sign in to the portal with Google using this email, so a
+            donor added without one won't have portal access until you add it later.
           </InfoCard>
           <InfoCard icon={Phone} title="Contact preference">
             Preferred method helps support and sponsorship managers know how to follow up.
@@ -327,6 +327,7 @@ function FormSection({
 
 function TextField({
   error,
+  hint,
   label,
   onChange,
   placeholder,
@@ -335,6 +336,7 @@ function TextField({
   value,
 }: {
   error?: string;
+  hint?: string;
   label: string;
   onChange: (value: string) => void;
   placeholder?: string;
@@ -358,7 +360,11 @@ function TextField({
         type={type}
         value={value}
       />
-      {error ? <span className="mt-1 block text-xs font-bold text-red-600">{error}</span> : null}
+      {error ? (
+        <span className="mt-1 block text-xs font-bold text-red-600">{error}</span>
+      ) : hint ? (
+        <span className="mt-1 block text-xs font-medium text-ink/55">{hint}</span>
+      ) : null}
     </label>
   );
 }

@@ -196,7 +196,8 @@ function mapPortalProfile(donor: Donor, canSwitchToAdmin: boolean): DonorPortalP
     authUserId: donor.authUserId,
     canSwitchToAdmin,
     cityCountry: donor.cityCountry,
-    email: donor.email,
+    // A portal donor authenticated via their Google email, so this is present in practice.
+    email: donor.email ?? '',
     fullName: donor.fullName,
     id: donor.id,
     phone: donor.phone,
@@ -810,7 +811,7 @@ export async function updateDonorPortalProfile(
     {
       active: donor.active,
       donorSource: donor.donorSource,
-      email: donor.email,
+      email: donor.email ?? '',
       fullName: input.fullName ?? donor.fullName,
       phone: input.phone ?? donor.phone ?? '',
       preferredContactMethod: input.preferredContactMethod ?? donor.preferredContactMethod,

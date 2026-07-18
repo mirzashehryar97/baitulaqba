@@ -45,7 +45,7 @@ function matchCoversMonth(match: AdminManualReceiptMatch, monthValue: string) {
 }
 
 type DonorWithMatches = {
-  email: string;
+  email: string | null;
   fullName: string;
   id: string;
   matches: AdminManualReceiptMatch[];
@@ -354,7 +354,10 @@ export function AdminManualReceiptDialog({
                     )}`}
                   />
                   <SummaryItem label="Status" value={selectedMatch.status} />
-                  <SummaryItem label="Contact" value={selectedMatch.donor.email} />
+                  <SummaryItem
+                    label="Contact"
+                    value={selectedMatch.donor.email ?? 'No email on file'}
+                  />
                 </div>
               ) : null}
 

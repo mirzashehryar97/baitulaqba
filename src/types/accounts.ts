@@ -87,7 +87,7 @@ export type DonorRow = {
   id: string;
   auth_user_id: string | null;
   full_name: string;
-  email: string;
+  email: string | null;
   phone: string | null;
   address: string | null;
   city_country: string | null;
@@ -110,7 +110,7 @@ export type Donor = {
   id: string;
   authUserId: string | null;
   fullName: string;
-  email: string;
+  email: string | null;
   phone: string | null;
   address: string | null;
   cityCountry: string | null;
@@ -129,6 +129,7 @@ export type DonorInput = {
   address: string;
   cityCountry?: string;
   donorSource: DonorSource;
+  /** Optional for admin-created donors. Empty string is stored as NULL (no portal login). */
   email: string;
   fullName: string;
   notes?: string;

@@ -16,11 +16,11 @@ const nextConfig = {
   images: {
     formats: ['image/avif', 'image/webp'],
   },
-  // PDF generation reads self-hosted fonts and the certificate background raster
+  // PDF generation reads self-hosted fonts and the certificate background rasters
   // from disk at request time. `@fontsource/*` .woff files are resolved via
   // `require.resolve` (traced automatically), but the certificate template lives
   // under `public/`, which Next does not bundle into serverless functions — list
-  // it explicitly here (with the fonts as a safety net) so these routes don't
+  // them explicitly here (with the fonts as a safety net) so these routes don't
   // throw ENOENT on Vercel.
   outputFileTracingIncludes: {
     '/api/admin/matches/[id]/certificate': [
@@ -31,7 +31,10 @@ const nextConfig = {
       './node_modules/@fontsource/*/files/*.woff',
       './public/images/pdf/match-certificate-template.png',
     ],
-    '/api/admin/orphans/[id]/profile-pdf': ['./node_modules/@fontsource/*/files/*.woff'],
+    '/api/admin/orphans/[id]/profile-pdf': [
+      './node_modules/@fontsource/*/files/*.woff',
+      './public/images/pdf/orphan-sponsorship-template.png',
+    ],
   },
   experimental: {
     // Per-icon / per-export module resolution so a named import like

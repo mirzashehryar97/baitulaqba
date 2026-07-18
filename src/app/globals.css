@@ -45,6 +45,8 @@
 
 html {
   scroll-behavior: smooth;
+  /* Offset hash-link jumps so section content clears the fixed 5rem (h-20) header. */
+  scroll-padding-top: 5rem;
 }
 
 body {

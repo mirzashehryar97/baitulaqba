@@ -40,7 +40,7 @@ export type AdminManualReceiptInput = {
 export type AdminManualReceiptMatch = {
   currency: string;
   donor: {
-    email: string;
+    email: string | null;
     fullName: string;
     id: string;
     phone: string | null;
@@ -110,7 +110,7 @@ export type AdminReceiptRow = {
   verified_by_team_member_id: string | null;
   bank_account?: OrganizationBankAccountRow | null;
   donor?: {
-    email: string;
+    email: string | null;
     full_name: string;
     id: string;
     phone: string | null;
@@ -143,7 +143,7 @@ export type AdminReceipt = {
   deliveryReference: string | null;
   donationMonth: string;
   donor: {
-    email: string;
+    email: string | null;
     fullName: string;
     id: string;
     phone: string | null;

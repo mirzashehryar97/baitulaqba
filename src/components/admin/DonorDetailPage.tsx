@@ -191,7 +191,7 @@ function toDonorInput(donor: Donor): DonorInput {
     address: donor.address ?? '',
     cityCountry: donor.cityCountry ?? '',
     donorSource: donor.donorSource,
-    email: donor.email,
+    email: donor.email ?? '',
     fullName: donor.fullName,
     notes: donor.notes ?? '',
     phone: donor.phone ?? '',
@@ -462,7 +462,7 @@ export function DonorDetailPage({ initialPayload }: { initialPayload: DonorDetai
               <DonorStatusBadge donor={donor} />
             </div>
             <div className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1.5 text-sm text-[#6b7280]">
-              <span>{donor.email}</span>
+              <span>{donor.email || 'No email added'}</span>
               <span aria-hidden="true">·</span>
               <span>{donor.phone || 'No phone added'}</span>
               <span aria-hidden="true">·</span>

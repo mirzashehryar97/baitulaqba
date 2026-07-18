@@ -134,6 +134,13 @@ alter table public.donors
 alter table public.donors
   alter column address set not null;
 
+-- Donor email is optional: admins can create donor profiles without an email
+-- (those donors simply can't sign in to the donor portal, which is Google-login only).
+-- The public sponsorship form still requires an email. The unique index on email
+-- permits multiple NULLs, so many email-less donors can coexist.
+alter table public.donors
+  alter column email drop not null;
+
 create index if not exists donors_active_idx
   on public.donors (active);
 

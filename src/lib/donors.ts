@@ -97,8 +97,8 @@ export type DonorListSummary = {
   total: number;
 };
 
-function normalizeEmail(email: string) {
-  return email.trim().toLowerCase();
+function normalizeOptionalEmail(value: string | null | undefined) {
+  return value?.trim().toLowerCase() || null;
 }
 
 function normalizeOptionalText(value: string | null | undefined) {
@@ -186,14 +186,11 @@ export function validateDonorInput(
     errors.fullName = 'Full name is required.';
   }
 
-  if (required || input?.email !== undefined) {
-    const email = input?.email?.trim() ?? '';
-
-    if (!email) {
-      errors.email = 'Email address is required.';
-    } else if (!emailPattern.test(email)) {
-      errors.email = 'Enter a valid email address.';
-    }
+  // Email is optional for donors (admins can create donor profiles without one;
+  // those donors just can't sign in to the portal). Only validate format when a
+  // value is actually provided.
+  if (input?.email?.trim() && !emailPattern.test(input.email.trim())) {
+    errors.email = 'Enter a valid email address.';
   }
 
   if ((required || input?.phone !== undefined) && !input?.phone?.trim()) {
@@ -438,7 +435,7 @@ export async function createDonor(input: DonorInput, createdByTeamMemberId: stri
       city_country: normalizeOptionalText(input.cityCountry),
       created_by_team_member_id: createdByTeamMemberId,
       donor_source: input.donorSource,
-      email: normalizeEmail(input.email),
+      email: normalizeOptionalEmail(input.email),
       full_name: input.fullName.trim(),
       notes: normalizeOptionalText(input.notes),
       phone: input.phone.trim(),
@@ -463,7 +460,7 @@ export async function updateDonor(id: string, update: DonorUpdate) {
   }
 
   if (update.email !== undefined) {
-    patch.email = normalizeEmail(update.email);
+    patch.email = normalizeOptionalEmail(update.email);
   }
 
   if (update.phone !== undefined) {

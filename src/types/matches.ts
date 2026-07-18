@@ -38,7 +38,7 @@ export type SponsorshipMatchRow = {
   donor?: {
     active: boolean;
     auth_user_id: string | null;
-    email: string;
+    email: string | null;
     full_name: string;
     id: string;
     phone: string | null;
